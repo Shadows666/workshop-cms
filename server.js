@@ -17,6 +17,23 @@ function handler(request, response) {
       }
       response.end(file);
     });
+  } else {
+    var splitEndpoint = endpoint.split(".");
+    if (splitEndpoint[splitEndpoint.length-1] == 'css') {
+      type = 'text/css'
+    } else if (splitEndpoint[splitEndpoint.length-1] === 'jpg') {
+      type = 'image/jpg'
+    }
+      response.writeHead(200, {
+        "Content-Type": type
+      });
+    fs.readFile(__dirname + '/public' + endpoint, function(error, file) {
+      if (error) {
+        console.log(error);
+        return;
+      }
+      response.end(file);
+    });
   }
 }
 
