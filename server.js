@@ -1,13 +1,23 @@
 var http = require('http');
-
-var message = "I am so happy to be part of the Node Girls worshop!"
+var fs = require('fs');
 
 function handler(request, response) {
-  response.writeHead(200, {
-    "Content-Type": "text/html"
-  });
-  response.write(message);
-  response.end();
+  var endpoint = request.url;
+  console.log(endpoint);
+
+  if (endpoint === "/") {
+    response.writeHead(200, {
+      "Content-Type": "text/html"
+    });
+
+    fs.readFile(__dirname + '/public/index.html', function(error, file) {
+      if (error) {
+        console.log(error);
+        return;
+      }
+      response.end(file);
+    });
+  }
 }
 
 var server = http.createServer(handler);
